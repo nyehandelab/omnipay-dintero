@@ -1,0 +1,36 @@
+{
+    "name": "nyehandel/omnipay-dintero",
+    "type": "library",
+    "description": "Dintero Checkout gateway for Omnipay payment processing library",
+    "keywords": [
+        "gateway",
+        "merchant",
+        "omnipay",
+        "pay",
+        "payment",
+        "dintero",
+        "purchase"
+    ],
+    "homepage": "https://github.com/nyehandelab/omnipay-dintero",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "David Andersson",
+            "email": "david@nyehandel.se"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Nyehandel\\Omnipay\\Dintero\\" : "src/"
+        }
+    },
+    "require": {
+        "omnipay/common": "^3"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "3.0.x-dev"
+        }
+    },
+    "prefer-stable": true
+}
