@@ -7,12 +7,18 @@ use Nyehandel\Omnipay\Dintero\Message\AbstractRequest;
 
 final class AuthenticationRequestHeaderProvider
 {
-    public function getHeaders(string $token): array
+    public function getHeaders(AbstractRequest $request, string $token): array
     {
-        return [
+        $headers = [
             'Authorization' => sprintf(
                 'Bearer ' . $token
             ),
         ];
+
+        if ($request->getSystemName() != '') {
+            $headers['Dintero-System-Name'] = $request->getSystemName();
+        }
+
+        return $headers;
     }
 }

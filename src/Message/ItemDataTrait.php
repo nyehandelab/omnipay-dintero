@@ -20,27 +20,21 @@ trait ItemDataTrait
         foreach ($items as $item) {
 
             $item->validate(
-                'type',
-                'reference',
+                'id',
+                'line_id',
                 'description',
                 'quantity',
-                'price',
-                'unit_discount_amount',
-                'vat',
+                'amount',
+                'vat_amount',
             );
 
-            $totalAmount = $item->getQuantity() * ($item->getPrice() - $item->getUnitDiscountAmount());
-
             $orderLines[] = [
-                'type' => $item->getType(),
-                'reference' => $item->getReference(),
+                'id' => $item->getId(),
+                'line_id' => (string) $item->getLineId(),
                 'description' => $item->getDescription(),
-                'quantity' => $item->getQuantity(),
-                'unitPrice' => (int) $item->getPrice(),
-                'unitDiscountAmount' => (int) $item->getUnitDiscountAmount(),
-                'vat' => (int) $item->getVat(),
-                'totalAmount' => (int) $totalAmount,
-                'totalVatAmount' => (int) $item->getTotalVatAmount(),
+                'quantity' => (int) $item->getQuantity(),
+                'amount' => (int) $item->getAmount(),
+                'vat_amount' => (int) $item->getVatAmount(),
             ];
         }
 

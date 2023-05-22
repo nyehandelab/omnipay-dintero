@@ -12,7 +12,7 @@ use Omnipay\Common\Http\Exception\RequestException;
 /**
  * Creates a Dintero Checkout order if it does not exist
  */
-final class CreateCheckoutSessionRequest extends AbstractOrderRequest
+final class CreateCheckoutSessionRequest extends AbstractCheckoutRequest
 {
     /**
      * @inheritDoc
@@ -22,22 +22,16 @@ final class CreateCheckoutSessionRequest extends AbstractOrderRequest
     public function getData()
     {
         $this->validate(
-            'country',
+            'amount',
             'currency',
-            'locale',
-            'settings',
-            'total_order_amount',
-            'total_order_amount_excl_vat',
-            'total_order_vat_amount',
+            'items',
+            'profile_id',
+            'url',
+            'express'
         );
 
-        $this->getSettings()->validate();
+        return $this->getCheckoutData();
 
-        $data = $this->getOrderData();
-
-        $data['settings'] = $this->getSettingsData();
-
-        return $data;
     }
 
     /**
@@ -51,10 +45,10 @@ final class CreateCheckoutSessionRequest extends AbstractOrderRequest
     {
         $response = $this->sendRequest(
             'POST',
-            'sessions',
-            $data
+            'sessions-profile?include_session=true',
+            $data,
         );
 
-        return new CreateOrderSessionResponse($this, $this->getResponseBody($response));
+        return new CreateCheckoutSessionResponse($this, $this->getResponseBody($response), $response->getStatusCode());
     }
 }

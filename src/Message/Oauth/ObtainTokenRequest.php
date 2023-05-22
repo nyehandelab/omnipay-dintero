@@ -15,17 +15,23 @@ use Psr\Http\Message\ResponseInterface;
  */
 final class ObtainTokenRequest
 {
-    protected $endpoint = 'https://checkout.dintero.com/v1/';
+    protected $endpoint = 'https://checkout.dintero.com';
     protected $version = 'v1';
 
-    public function __construct(protected string $accountId, protected string $clientId, protected string $clientSecret, string $audienceBaseUrl)
+    public function __construct(protected string $accountId, protected string $clientId, protected string $clientSecret, protected string $audienceBaseUrl, protected bool $testMode = false)
     {
         //
     }
 
     public function getEndpoint()
     {
-        return $this->endpoint . '/' . $this->version . '/accounts/' . $this->accountId . '/auth/token';
+        return $this->endpoint . '/' . $this->version . '/accounts/' . $this->getAccountId() . '/auth/token';
+    }
+
+
+    public function getAccountId ()
+    {
+        return ($this->testMode ? 'T' : 'P') . $this->accountId;
     }
 
     /**
@@ -53,9 +59,15 @@ final class ObtainTokenRequest
     {
         $authString = base64_encode($this->clientId . ':' . $this->clientSecret);
 
+
         $headers = [
             'Content-Type' => 'application/json',
             'Authorization' => 'Basic ' . $authString,
+        ];
+
+        $data = [
+            'grant_type' => 'client_credentials',
+            'audience' => $this->audienceBaseUrl . 'accounts/' . $this->getAccountId(),
         ];
         $httpClient = new Client();
 
@@ -63,10 +75,7 @@ final class ObtainTokenRequest
             'POST',
             $this->getEndpoint(),
             $headers,
-            http_build_query([
-                'grant_type' => 'client_credentials',
-                'audience' => $this->audienceBaseUrl . '/accounts/' . $this->accountId,
-            ]),
+            json_encode($data),
         );
 
         return $this->getResponseBody($response);

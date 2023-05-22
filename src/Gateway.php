@@ -8,6 +8,7 @@ use Nyehandel\Omnipay\Dintero\Message\AcknowledgeOrderRequest;
 use Nyehandel\Omnipay\Dintero\Message\AuthorizeRequest;
 use Nyehandel\Omnipay\Dintero\Message\CancelOrderRequest;
 use Nyehandel\Omnipay\Dintero\Message\CaptureRequest;
+use Nyehandel\Omnipay\Dintero\Message\Checkout\CreateCheckoutSessionRequest;
 use Nyehandel\Omnipay\Dintero\Message\CreateOrderSessionRequest;
 use Nyehandel\Omnipay\Dintero\Message\ExtendAuthorizationRequest;
 use Nyehandel\Omnipay\Dintero\Message\FetchTransactionRequest;
@@ -28,7 +29,8 @@ use Omnipay\Common\Message\RequestInterface;
 
 final class Gateway extends AbstractGateway implements GatewayInterface
 {
-    const BASE_URL = 'https://checkout.dintero.com/';
+    const BASE_URL = 'https://checkout.dintero.com';
+    const AUDIENCE = 'https://api.dintero.com';
     const VERSION = 'v1';
 
     /**
@@ -105,9 +107,12 @@ final class Gateway extends AbstractGateway implements GatewayInterface
     public function getDefaultParameters(): array
     {
         return [
+            'client_id' => '',
             'secret' => '',
-            'testMode' => true,
-            'username' => '',
+            'account_id' => '',
+            'profile_id' => '',
+            'test_mode' => true,
+            'system_name' => 'Nyehandel-omnipay',
         ];
     }
 
@@ -130,11 +135,41 @@ final class Gateway extends AbstractGateway implements GatewayInterface
     /**
      * @return string
      */
-    public function getId(): string
+    public function getAccountId(): string
     {
-        return $this->getParameter('id');
+        return $this->getParameter('account_id');
     }
 
+    /**
+     * @return string
+     */
+    public function getClientId(): string
+    {
+        return $this->getParameter('client_id');
+    }
+
+    /**
+     * @return string
+     */
+    public function getProfileId(): string
+    {
+        return $this->getParameter('profile_id');
+    }
+
+    /**
+     * @return string
+     */
+    public function getSystemName(): string
+    {
+        return $this->getParameter('system_name');
+    }
+
+    public function setSystemName(string $systemName)
+    {
+        $this->setParameter('system_name', $systemName);
+
+        return $this;
+    }
     /**
      * @inheritDoc
      */
@@ -177,9 +212,33 @@ final class Gateway extends AbstractGateway implements GatewayInterface
      *
      * @return $this
      */
-    public function setId(string $id): self
+    public function setClientId(string $id): self
     {
-        $this->setParameter('id', $id);
+        $this->setParameter('client_id', $id);
+
+        return $this;
+    }
+
+    /**
+     * @param string $account_id
+     *
+     * @return $this
+     */
+    public function setAccountId(string $account_id): self
+    {
+        $this->setParameter('account_id', $account_id);
+
+        return $this;
+    }
+
+    /**
+     * @param string $profile_id
+     *
+     * @return $this
+     */
+    public function setProfileId(string $profile_id): self
+    {
+        $this->setParameter('profile_id', $profile_id);
 
         return $this;
     }
@@ -214,8 +273,16 @@ final class Gateway extends AbstractGateway implements GatewayInterface
         return $this->createRequest(SetOrderReferenceRequest::class, $options);
     }
 
+
+
     private function setBaseUrl()
     {
+        $this->setAudience();
         $this->parameters->set('base_url', self::BASE_URL . '/' . self::VERSION . '/');
+    }
+
+    private function setAudience()
+    {
+        $this->parameters->set('audience', self::AUDIENCE . '/' . self::VERSION . '/');
     }
 }

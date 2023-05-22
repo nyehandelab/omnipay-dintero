@@ -24,15 +24,17 @@ class TokenService
         return json_decode($token);
     }
 
-    public function create(string $accountId, string $clientId, string $clientSecret, string $audienceBaseUrl)
+    public function create(string $accountId, string $clientId, string $clientSecret, string $audienceBaseUrl, bool $testMode = false)
     {
-        $obtainTokenRequest = new ObtainTokenRequest($accountId, $clientId, $clientSecret, $audienceBaseUrl);
+
+        $obtainTokenRequest = new ObtainTokenRequest($accountId, $clientId, $clientSecret, $audienceBaseUrl, $testMode);
         $response = $obtainTokenRequest->send();
 
-        $response['expires_at'] = time() + $response['expires_in'] - 10;
+
+        $response['expires_in'] = time() + $response['expires_in'] - 10;
         $data = json_encode($response);
 
-        $this->set($id, $data);
+        $this->set($accountId, $data);
 
         return json_decode($data);
     }

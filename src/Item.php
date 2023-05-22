@@ -11,7 +11,7 @@ final class Item extends \Omnipay\Common\Item
     /**
      * Validate the item
      *
-     * 
+     *
      * @return void
      * @throws Exception\InvalidRequestException
      * @throws InvalidSettingsException
@@ -20,80 +20,56 @@ final class Item extends \Omnipay\Common\Item
     /**
      * @inheritDoc
      */
-    public function getType()
+    public function getId()
     {
-        return $this->getParameter('type');
+        return $this->getParameter('id');
     }
 
     /**
-     * @param string $type
+     * @param string $id
      */
-    public function setType($type)
+    public function setId($id)
     {
-        $this->setParameter('type', $type);
+        $this->setParameter('id', $id);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getReference()
+    public function setLineId ($lineId)
     {
-        return $this->getParameter('reference');
+        $this->setParameter('line_id', $lineId);
     }
 
-    /**
-     * @param string $reference
-     */
-    public function setReference($reference)
+    public function getLineId ()
     {
-        $this->setParameter('reference', $reference);
+        return $this->getParameter('line_id');
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getUnitDiscountAmount()
+    public function setDescription ($description)
     {
-        return $this->getParameter('unit_discount_amount');
+        $this->setParameter('description', $description);
     }
 
-    /**
-     * @param int $unitDiscountAmount
-     */
-    public function setUnitDiscountAmount($unitDiscountAmount)
+    public function getDescription ()
     {
-        $this->setParameter('unit_discount_amount', $unitDiscountAmount);
+        return $this->getParameter('description');
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getVat()
+    public function setAmount ($amount)
     {
-        return $this->getParameter('vat');
+        $this->setParameter('amount', $amount);
     }
 
-    /**
-     * @param int $unitDiscountAmount
-     */
-    public function setVat($vat)
+    public function getAmount ()
     {
-        $this->setParameter('vat', $vat);
+        return $this->getParameter('amount');
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getTotalVatAmount()
+    public function setVatAmount ($vatAmount)
     {
-        return $this->getParameter('total_tax_amount');
+        $this->setParameter('vat_amount', $vatAmount);
     }
 
-    /**
-     * @param int $amount
-     */
-    public function setTotalVatAmount($amount)
+    public function getVatAmount ()
     {
-        $this->setParameter('total_tax_amount', $amount);
+        return $this->getParameter('vat_amount');
     }
 }

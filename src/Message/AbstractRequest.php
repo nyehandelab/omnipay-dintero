@@ -29,28 +29,18 @@ abstract class AbstractRequest extends BaseAbstractRequest
     /**
      * @return string
      */
-    public function getId(): string
+    public function getAccountId(): string
     {
-        return $this->getParameter('id');
+        return $this->getParameter('account_id');
     }
 
+    public function getProfileId(): string
+    {
+        return $this->getParameter('profile_id');
+    }
     /**
      * @return string|null
      */
-    public function getBaseUrl()
-    {
-        return $this->getParameter('base_url');
-    }
-
-    /**
-     * RFC 1766 customer's locale.
-     *
-     * @return string|null
-     */
-    public function getLocale()
-    {
-        return $this->getParameter('locale');
-    }
 
     /**
      * @return string|null
@@ -83,6 +73,72 @@ abstract class AbstractRequest extends BaseAbstractRequest
         return $this;
     }
 
+    public function setAudience(string $audience)
+    {
+        $this->setParameter('audience', $audience);
+        return $this;
+    }
+
+    public function setUrl(array $url): self
+    {
+        $this->setParameter('url', $url);
+
+        return $this;
+    }
+
+    public function getUrl ()
+    {
+        return $this->getParameter('url');
+    }
+
+    public function setExpress (array $express)
+    {
+        $this->setParameter('express', $express);
+
+        return $this;
+    }
+
+    public function getExpress ()
+    {
+        return $this->getParameter('express');
+    }
+    public function setShippingMethod(array $shipping_method): self
+    {
+        $this->setParameter('shipping_method', $shipping_method);
+
+        return $this;
+    }
+
+    public function getShippingMethod ()
+    {
+        return $this->getParameter('shipping_method');
+    }
+
+    public function setMerchantReference (string $merchant_reference)
+    {
+        $this->setParameter('merchant_reference', $merchant_reference);
+    }
+
+    public function getMerchantReference ()
+    {
+        return $this->getParameter('merchant_reference');
+    }
+
+    /**
+     * @return string
+     */
+    public function getSystemName(): string
+    {
+        return $this->getParameter('system_name');
+    }
+
+    public function setSystemName(string $systemName)
+    {
+        $this->setParameter('system_name', $systemName);
+
+        return $this;
+    }
+    /**
     /**
      * @inheritdoc
      */
@@ -120,9 +176,26 @@ abstract class AbstractRequest extends BaseAbstractRequest
      *
      * @return $this
      */
-    public function setId(string $id): self
+    public function setAccountId(string $id): self
     {
-        $this->setParameter('id', $id);
+        $this->setParameter('account_id', $id);
+
+        return $this;
+    }
+
+    public function setClientId (string $client_id)
+    {
+        $this->setParameter('client_id', $client_id);
+    }
+
+    public function getClientId ()
+    {
+        return $this->getParameter('client_id');
+    }
+
+    public function setProfileId(string $id): self
+    {
+        $this->setParameter('profile_id', $id);
 
         return $this;
     }
@@ -173,6 +246,16 @@ abstract class AbstractRequest extends BaseAbstractRequest
         return $this;
     }
 
+    public function getBaseUrl ()
+    {
+        return $this->getParameter('base_url');
+    }
+
+    public function getAudience ()
+    {
+        return $this->getParameter('audience');
+    }
+
     /**
      * @param ResponseInterface $response
      *
@@ -202,19 +285,18 @@ abstract class AbstractRequest extends BaseAbstractRequest
 
         $tokenExpired = false;
         $tokenService = new TokenService();
-        $token = $tokenService->get($this->getId());
+        $token = $tokenService->get($this->getAccountId());
 
         if (is_null($token) || !property_exists($token, 'expires_at') || $tokenExpired = $token->expires_at < time()) {
             if ($tokenExpired) {
-                $tokenService->invalidate($this->getId());
+                $tokenService->invalidate($this->getAccountId());
             }
 
             // todo; fix parameters, add audience
-            $token = $tokenService->create($this->getAccountId(), $this->getClientId(), $this->getClientSecret(), $this->getBaseUrl());
+            $token = $tokenService->create($this->getAccountId(), $this->getClientId(), $this->getSecret(), $this->getAudience(), $this->getTestMode());
         }
 
-        $headers = (new AuthenticationRequestHeaderProvider())->getHeaders($token->access_token);
-        dd($headers);
+        $headers = (new AuthenticationRequestHeaderProvider())->getHeaders($this, $token->access_token);
 
         if ('GET' === $method) {
             return $this->httpClient->request(

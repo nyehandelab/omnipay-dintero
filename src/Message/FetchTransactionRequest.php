@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
-namespace Nyehandel\Omnipay\Dintero\Message\Checkout;
+namespace Nyehandel\Omnipay\Dintero\Message;
 
 use Omnipay\Common\Exception\InvalidRequestException;
 use Omnipay\Common\Exception\InvalidResponseException;
@@ -11,7 +12,7 @@ use Omnipay\Common\Http\Exception\RequestException;
 /**
  * Creates a Dintero Checkout order if it does not exist
  */
-final class GetCheckoutSessionRequest extends AbstractCheckoutRequest
+final class FetchTransactionRequest extends AbstractOrderRequest
 {
     /**
      * @inheritDoc
@@ -21,7 +22,7 @@ final class GetCheckoutSessionRequest extends AbstractCheckoutRequest
     public function getData()
     {
         $this->validate(
-            'order_id',
+            'transaction_id',
         );
 
         return [];
@@ -38,11 +39,10 @@ final class GetCheckoutSessionRequest extends AbstractCheckoutRequest
     {
         $response = $this->sendRequest(
             'GET',
-            'sessions/' . $this->getOrderId(),
-            $data
+            'orders/' . $this->getTransactionId() . '/capture',
         );
 
-        return new GetOrderSessionResponse(
+        return new FetchTransactionResponse(
             $this,
             $this->getResponseBody($response),
             $response->getStatusCode()

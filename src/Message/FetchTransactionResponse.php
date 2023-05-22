@@ -1,13 +1,12 @@
 <?php
+
 declare(strict_types=1);
 
-namespace Nyehandel\Omnipay\Dintero\Message\Checkout;
+namespace Nyehandel\Omnipay\Dintero\Message;
 
-use Nyehandel\Omnipay\Dintero\Message\AbstractResponse;
-use Omnipay\Common\Message\RedirectResponseInterface;
 use Omnipay\Common\Message\RequestInterface;
 
-final class CreateCheckoutSessionResponse extends AbstractResponse
+final class FetchTransactionResponse extends AbstractResponse
 {
     /**
      * @var int
