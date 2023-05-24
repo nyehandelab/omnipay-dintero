@@ -22,15 +22,15 @@ final class UpdateOrderSessionRequest extends AbstractOrderRequest
     public function getData(): array
     {
         $this->validate(
-            'order_id',
-            'total_order_amount',
-            'total_order_amount_excl_vat',
-            'total_order_vat_amount',
+            'amount',
+            'currency',
+            'items',
+            'profile_id',
+            'url',
+            'express'
         );
 
-        $data = $this->getOrderData();
-
-        return $data;
+        return $this->getCheckoutData();
     }
 
     /**
@@ -43,7 +43,7 @@ final class UpdateOrderSessionRequest extends AbstractOrderRequest
     public function sendData($data): UpdateOrderSessionResponse
     {
         $response = $this->sendRequest(
-            'POST',
+            'PUT',
             'sessions/' . $this->getOrderId(),
             $data
         );

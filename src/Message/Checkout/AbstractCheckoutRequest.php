@@ -33,7 +33,7 @@ abstract class AbstractCheckoutRequest extends AbstractRequest
                 'currency' => $this->getCurrency(),
                 'merchant_reference' => $this->getMerchantReference(),
                 'items' => $this->getItemData($this->getItems()),
-                'shipping_method' => [],
+                //'shipping_option' => [],
             ],
             'express' => $this->getExpress(),
             'profile_id' => $this->getProfileId(),

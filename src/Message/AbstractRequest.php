@@ -26,6 +26,16 @@ abstract class AbstractRequest extends BaseAbstractRequest
         return $this->getParameter('amount');
     }
 
+    public function getShippingOption()
+    {
+        return $this->getParameter('shipping_option');
+    }
+
+    public function setShippingOption(array $shipping_option)
+    {
+        return $this->setParameter('shipping_option', $shipping_option);
+    }
+
     /**
      * @return string
      */
@@ -256,6 +266,16 @@ abstract class AbstractRequest extends BaseAbstractRequest
         return $this->getParameter('audience');
     }
 
+    public function getReference ()
+    {
+        return $this->getParameter('reference');
+    }
+
+    public function setReference ($reference)
+    {
+        return $this->setParameter('reference', $reference);
+    }
+
     /**
      * @param ResponseInterface $response
      *
@@ -287,7 +307,7 @@ abstract class AbstractRequest extends BaseAbstractRequest
         $tokenService = new TokenService();
         $token = $tokenService->get($this->getAccountId());
 
-        if (is_null($token) || !property_exists($token, 'expires_at') || $tokenExpired = $token->expires_at < time()) {
+        if (is_null($token) || !property_exists($token, 'expires_in') || $tokenExpired = $token->expires_in < time()) {
             if ($tokenExpired) {
                 $tokenService->invalidate($this->getAccountId());
             }

@@ -23,9 +23,12 @@ final class FullCaptureRequest extends AbstractOrderRequest
     {
         $this->validate(
             'order_id',
+            'amount'
         );
 
-        return [];
+        return [
+            'amount' => $this->getAmount(),
+        ];
     }
 
     /**
@@ -39,7 +42,8 @@ final class FullCaptureRequest extends AbstractOrderRequest
     {
         $response = $this->sendRequest(
             'POST',
-            'orders/' . $this->getOrderId() . '/capture',
+            'transactions/' . $this->getOrderId() . '/capture',
+            $this->getData(),
         );
 
         return new FullCaptureResponse(

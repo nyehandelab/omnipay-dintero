@@ -72,4 +72,24 @@ final class Item extends \Omnipay\Common\Item
     {
         return $this->getParameter('vat_amount');
     }
+
+    public function setVat ($vat)
+    {
+        $this->setParameter('vat', $vat);
+    }
+
+    public function getVat ()
+    {
+        return $this->getParameter('vat');
+    }
+
+    public function setType ($type)
+    {
+        $this->setParameter('type', $type);
+    }
+
+    public function getType ()
+    {
+        return $this->getParameter('type');
+    }
 }

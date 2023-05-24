@@ -39,7 +39,7 @@ final class FetchTransactionRequest extends AbstractOrderRequest
     {
         $response = $this->sendRequest(
             'GET',
-            'orders/' . $this->getTransactionId() . '/capture',
+            'transactions/' . $this->getTransactionId() ,
         );
 
         return new FetchTransactionResponse(

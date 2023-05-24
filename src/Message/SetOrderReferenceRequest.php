@@ -25,7 +25,7 @@ final class SetOrderReferenceRequest extends AbstractOrderRequest
             'reference',
         );
 
-        $data['reference'] = $this->getReference();
+        $data['merchant_reference_2'] = $this->getReference();
 
         return $data;
     }
@@ -37,11 +37,11 @@ final class SetOrderReferenceRequest extends AbstractOrderRequest
      * @throws RequestException when the HTTP client is passed a request that is invalid and cannot be sent.
      * @throws NetworkException if there is an error with the network or the remote server cannot be reached.
      */
-    public function sendData($data): SetOrderReferenceResponse 
+    public function sendData($data): SetOrderReferenceResponse
     {
         $response = $this->sendRequest(
-            'POST',
-            'orders/' . $this->getOrderId() . '/reference',
+            'PUT',
+            'transactions/' . $this->getOrderId(),
             $data
         );
 

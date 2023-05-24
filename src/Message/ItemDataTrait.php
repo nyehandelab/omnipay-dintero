@@ -26,6 +26,7 @@ trait ItemDataTrait
                 'quantity',
                 'amount',
                 'vat_amount',
+                'vat'
             );
 
             $orderLines[] = [
@@ -35,6 +36,8 @@ trait ItemDataTrait
                 'quantity' => (int) $item->getQuantity(),
                 'amount' => (int) $item->getAmount(),
                 'vat_amount' => (int) $item->getVatAmount(),
+                'vat' => (int) $item->getVat(),
+                'type' => $item->getType(),
             ];
         }
 

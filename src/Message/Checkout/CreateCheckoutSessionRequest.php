@@ -45,7 +45,7 @@ final class CreateCheckoutSessionRequest extends AbstractCheckoutRequest
     {
         $response = $this->sendRequest(
             'POST',
-            'sessions-profile?include_session=true',
+            'sessions-profile',
             $data,
         );
 

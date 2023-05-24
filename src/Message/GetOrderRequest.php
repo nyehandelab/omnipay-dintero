@@ -39,7 +39,7 @@ final class GetOrderRequest extends AbstractOrderRequest
     {
         $response = $this->sendRequest(
             'GET',
-            'orders/' . $this->getOrderId(),
+            'transactions/' . $this->getOrderId(),
             $data
         );
 
